@@ -14,4 +14,8 @@ colorama
 statsmodels
 torch
 adjustText
+umap-learn==0.5.5
+hdbscan==0.8.33
+sentence-transformers==2.3.0
+bertopic==0.16.0
 shap

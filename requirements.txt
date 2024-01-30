@@ -1,0 +1,16 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+jupyter
+xgboost
+openpyxl
+optuna
+huggingface-hub
+transformers
+tensorflow
+colorama
+statsmodels
+torch
+adjustText

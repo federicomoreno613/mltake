@@ -296,6 +296,7 @@ def compute_calibration_summary(
 
 import pandas as pd
 
+
 def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, model_type, name, estimator_metrics):
     # Determine the prediction method based on the model type
     if model_type == "logistic_regression":
@@ -310,6 +311,7 @@ def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, 
     # Compute and store validation metrics
     metrics_dict_val = compute_binary_score(labels_val, pred_val)
     metrics_dict_val["name"] = name
+    metrics_dict_val["model"] = model_type
     metrics_dict_val["stage"] = "val"
     estimator_metrics.append(metrics_dict_val)
 
@@ -317,6 +319,7 @@ def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, 
     metrics_dict_test = compute_binary_score(labels_test, pred_test)
     metrics_dict_test["name"] = name
     metrics_dict_test["stage"] = "test"
+    metrics_dict_val["model"] = model_type
     estimator_metrics.append(metrics_dict_test)
 
     return estimator_metrics

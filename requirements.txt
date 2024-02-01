@@ -17,6 +17,6 @@ adjustText
 sentence-transformers==2.3.0
 bertopic==0.16.0
 shap
-cuml-cu12 --extra-index-url https://pypi.nvidia.com
 nltk
 locale
+

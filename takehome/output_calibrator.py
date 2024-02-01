@@ -1,3 +1,6 @@
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.base import BaseEstimator
 import os
 import math
 import numpy as np
@@ -7,9 +10,6 @@ import sklearn.metrics as metrics
 from typing import Dict, List, Tuple, Optional
 from sklearn.utils import check_consistent_length, column_or_1d
 from sklearn.calibration import calibration_curve
-import numpy as np
-from sklearn.linear_model import LogisticRegression
-from sklearn.base import BaseEstimator
 
 
 __all__ = [
@@ -294,36 +294,6 @@ def compute_calibration_summary(
     return df_metrics
 
 
-import pandas as pd
-
-
-def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, model_type, name, estimator_metrics):
-    # Determine the prediction method based on the model type
-    if model_type == "logistic_regression":
-        pred_val = model.predict(df_val[model_cols])
-        pred_test = model.predict(df_test[model_cols])
-    elif model_type == "xgboost":
-        pred_val = model.predict_proba(df_val[model_cols].values)[:, 1]
-        pred_test = model.predict_proba(df_test[model_cols].values)[:, 1]
-    else:
-        raise ValueError(f"Unsupported model type: {model_type}")
-
-    # Compute and store validation metrics
-    metrics_dict_val = compute_binary_score(labels_val, pred_val)
-    metrics_dict_val["name"] = name
-    metrics_dict_val["model"] = model_type
-    metrics_dict_val["stage"] = "val"
-    estimator_metrics.append(metrics_dict_val)
-
-    # Compute and store test metrics
-    metrics_dict_test = compute_binary_score(labels_test, pred_test)
-    metrics_dict_test["name"] = name
-    metrics_dict_test["stage"] = "test"
-    metrics_dict_val["model"] = model_type
-    estimator_metrics.append(metrics_dict_test)
-
-    return estimator_metrics
-
 
 __all__ = [
     'HistogramCalibrator',
@@ -575,3 +545,33 @@ class PlattHistogramCalibrator(PlattCalibrator):
         y_prob_platt = super().predict(y_prob)
         indices = np.searchsorted(self.bins_, y_prob_platt)
         return self.bins_score_[indices]
+
+
+
+
+def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, model_type, name, estimator_metrics):
+    # Determine the prediction method based on the model type
+    if model_type == "logistic_regression":
+        pred_val = model.predict(df_val[model_cols])
+        pred_test = model.predict(df_test[model_cols])
+    elif model_type == "xgboost":
+        pred_val = model.predict_proba(df_val[model_cols].values)[:, 1]
+        pred_test = model.predict_proba(df_test[model_cols].values)[:, 1]
+    else:
+        raise ValueError(f"Unsupported model type: {model_type}")
+
+    # Compute and store validation metrics
+    metrics_dict_val = compute_binary_score(labels_val, pred_val)
+    metrics_dict_val["name"] = name
+    metrics_dict_val["model"] = model_type
+    metrics_dict_val["stage"] = "val"
+    estimator_metrics.append(metrics_dict_val)
+
+    # Compute and store test metrics
+    metrics_dict_test = compute_binary_score(labels_test, pred_test)
+    metrics_dict_test["name"] = name
+    metrics_dict_test["stage"] = "test"
+    metrics_dict_val["model"] = model_type
+    estimator_metrics.append(metrics_dict_test)
+
+    return estimator_metrics

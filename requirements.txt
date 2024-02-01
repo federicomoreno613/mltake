@@ -17,5 +17,4 @@ adjustText
 sentence-transformers==2.3.0
 shap
 nltk
-locale
 

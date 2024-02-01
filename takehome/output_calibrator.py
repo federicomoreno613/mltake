@@ -548,30 +548,3 @@ class PlattHistogramCalibrator(PlattCalibrator):
 
 
 
-
-def evaluate_model(model, df_val, df_test, model_cols, labels_val, labels_test, model_type, name, estimator_metrics):
-    # Determine the prediction method based on the model type
-    if model_type == "logistic_regression":
-        pred_val = model.predict(df_val[model_cols])
-        pred_test = model.predict(df_test[model_cols])
-    elif model_type == "xgboost":
-        pred_val = model.predict_proba(df_val[model_cols].values)[:, 1]
-        pred_test = model.predict_proba(df_test[model_cols].values)[:, 1]
-    else:
-        raise ValueError(f"Unsupported model type: {model_type}")
-
-    # Compute and store validation metrics
-    metrics_dict_val = compute_binary_score(labels_val, pred_val)
-    metrics_dict_val["name"] = name
-    metrics_dict_val["model"] = model_type
-    metrics_dict_val["stage"] = "val"
-    estimator_metrics.append(metrics_dict_val)
-
-    # Compute and store test metrics
-    metrics_dict_test = compute_binary_score(labels_test, pred_test)
-    metrics_dict_test["name"] = name
-    metrics_dict_test["stage"] = "test"
-    metrics_dict_val["model"] = model_type
-    estimator_metrics.append(metrics_dict_test)
-
-    return estimator_metrics

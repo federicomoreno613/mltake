@@ -15,7 +15,6 @@ statsmodels
 torch
 adjustText
 sentence-transformers==2.3.0
-bertopic==0.16.0
 shap
 nltk
 locale

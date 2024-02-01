@@ -1,32 +1,32 @@
 import re
 import json
+import re
 
 # Function to clean and preprocess text
+# Asegurarse de que las stopwords estén descargadas
+import nltk
+import re
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 def clean_text(text):
-    # Remove HTML tags and non-alphanumeric characters
+    # Eliminar etiquetas HTML y secuencias específicas
     text = re.sub('<[^<]+?>', '', text)
-    text = re.sub('[^a-zA-Z0-9\s]', '', text)
-    # replace accents
-    text = text.replace('á', 'a')
-    text = text.replace('é', 'e')
-    text = text.replace('í', 'i')
-    text = text.replace('ó', 'o')
-    text = text.replace('ú', 'u')
-    # remove extra spaces
-    text = re.sub(' +', ' ', text)
-    # remove new line characters
-    text = text.replace('\n', ' ')
-    # remove single quotes
-    text = text.replace("'", "")
-    # remove double quotes
-    text = text.replace('"', '')
-    # remove leading and trailing spaces
-    #clean <div> tags
-    text = text.replace('div', '')
+    text = re.sub('\n</div>\n<div><br />\n</div>\n<div', '', text)
+    text = text.lower()
+    # Eliminar caracteres no alfanuméricos y números
+    text = re.sub('[^a-zA-Z\s]', '', text)
+    text = re.sub('div', '', text)
+    text = re.sub('br', '', text)
+    text = re.sub('que', '', text)
+    text = re.sub('su', '', text)
+    text = re.sub('para', '', text)
+
+    # Eliminar stopwords en inglés
+    stop_words = set(stopwords.words('english'))
+    text = ' '.join([word for word in text.split() if word not in stop_words])
 
 
-    return text.strip().lower()
-
+    return text
 
 def create_similar_text_df(df_original, df_similarities):
     """

@@ -9,8 +9,6 @@ openpyxl
 optuna
 huggingface-hub
 transformers
-tensorflow
-colorama
 statsmodels
 torch
 adjustText
